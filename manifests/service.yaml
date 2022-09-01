@@ -1,12 +1,28 @@
-apiVersion: v1
+apiVersion: v1 # Includes the Service for lazyness
 kind: Service
 metadata:
-  name: dwk-environments-svc
+  name: taskproject-svc
+  namespace: project
+  labels:
+    app: tsp
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
-    app: dwk-environments
+    app: tsp
+  clusterIP: None
   ports:
-    - port: 80
-      protocol: TCP
-      targetPort: 80
+  - port: 8080
+    protocol: TCP
+    targetPort: frontend-port
+#    name: frontend-port
+  - port: 8081
+    protocol: TCP
+    targetPort: backend-port
+#    name: backend-port
+  - port: 3306
+    protocol: TCP
+    targetPort: mariadb-port
+#    name: mariadb-port
+#  - port: 8080
+#    protocol: TCP
+#    targetPort: dbtool-port
