@@ -34,28 +34,33 @@ jobs:
       - run: |-
           gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
       # Build the Docker images
-      - name: Build
+      - name: Build backend
         run: |-
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE/backend:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
             ./backend
+      - name: Build frontend
         run: |-
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE/frontend:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
             ./frontend
+      - name: Build cronjob
         run: |-
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE/cronjob:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
             ./cronjob
       # Push the Docker image to Google Container Registry
-      - name: Publish
+      - name: Publish backend
         run: |-
           docker push "gcr.io/$PROJECT_ID/$IMAGE/backend:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
+      - name: Publish frontend
         run: |-
           docker push "gcr.io/$PROJECT_ID/$IMAGE/frontend:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
+      - name: Pull mariadb from docker
         run: |-
-          docker pull mariadb:latest \
-          && docker tag mariadb:latest "gcr.io/$PROJECT_ID/$IMAGE/mariadb:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
+          docker pull mariadb:latest
+          docker tag mariadb:latest "gcr.io/$PROJECT_ID/$IMAGE/mariadb:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
+      - name: Publish mariadb to G
         run: |-
           docker push "gcr.io/$PROJECT_ID/$IMAGE/mariadb:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
 
