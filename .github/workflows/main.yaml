@@ -76,5 +76,5 @@ jobs:
           kustomize edit set image gcr.io/PROJECT_ID/IMAGE/MARIADB=gcr.io/$PROJECT_ID/$IMAGE/mariadb:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize edit set image gcr.io/PROJECT_ID/IMAGE/CRONJOB=gcr.io/$PROJECT_ID/$IMAGE/cronjob:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
           kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment $IMAGE/*
+          kubectl rollout status deployment
           kubectl get services -o wide

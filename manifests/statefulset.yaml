@@ -68,7 +68,6 @@ spec:
       name: mariadb-disk
     spec:
       accessModes: ["ReadWriteOnce"]
-      storageClassName: local-path
       resources:
         requests:
           storage: 100Mi
