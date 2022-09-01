@@ -5,8 +5,8 @@ resources:
   - manifests/configmap_sql.yaml
   - manifests/cronjob.yaml
   - manifests/ingress.yaml
-  - service.yaml
-  - statefulset.yaml
+  - manifests/service.yaml
+  - manifests/statefulset.yaml
 images:
   - name: PROJECT/FRONTEND
     newName: gcr.io/PROJECT_ID/IMAGE/FRONTEND
