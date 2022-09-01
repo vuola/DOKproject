@@ -12,16 +12,16 @@ spec:
   ports:
   - port: 8080
     protocol: TCP
-    targetPort: frontend-port
-#    name: frontend-port
+#    targetPort: frontend-port
+    name: frontend-port
   - port: 8081
     protocol: TCP
-    targetPort: backend-port
-#    name: backend-port
+#    targetPort: backend-port
+    name: backend-port
   - port: 3306
     protocol: TCP
-    targetPort: mariadb-port
-#    name: mariadb-port
+#    targetPort: mariadb-port
+    name: mariadb-port
 #  - port: 8080
 #    protocol: TCP
 #    targetPort: dbtool-port
