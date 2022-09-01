@@ -38,6 +38,7 @@ jobs:
         run: |-
           docker build \
             --tag "gcr.io/$PROJECT_ID/$IMAGE:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
+            --no-cache \
             .
       # Push the Docker image to Google Container Registry
       - name: Publish
