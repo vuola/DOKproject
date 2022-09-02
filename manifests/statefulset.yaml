@@ -59,10 +59,12 @@ spec:
           subPath: mysql
         - name: config-map
           mountPath: /docker-entrypoint-initdb.d
+# start
       volumes:
       - name: config-map
         configMap:
           name: database-sql
+# end
   volumeClaimTemplates:
   - metadata:
       name: mariadb-disk
@@ -71,3 +73,14 @@ spec:
       resources:
         requests:
           storage: 100Mi
+#start
+#  - metadata:
+#      name: config-map
+#      configMap:
+#        name: database-sql
+#    spec:
+#      accessModes: ["ReadWriteOnce"]
+#      resources:
+#        requests:
+#          storage: 1Mi
+#end
