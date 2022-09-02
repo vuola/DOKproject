@@ -60,10 +60,10 @@ spec:
         - name: config-map
           mountPath: /docker-entrypoint-initdb.d
 # start
-      volumes:
-      - name: config-map
-        configMap:
-          name: database-sql
+#      volumes:
+#      - name: config-map
+#        configMap:
+#          name: database-sql
 # end
   volumeClaimTemplates:
   - metadata:
@@ -74,13 +74,13 @@ spec:
         requests:
           storage: 100Mi
 #start
-#  - metadata:
-#      name: config-map
-#      configMap:
-#        name: database-sql
-#    spec:
-#      accessModes: ["ReadWriteOnce"]
-#      resources:
-#        requests:
-#          storage: 1Mi
+  - metadata:
+      name: config-map
+      configMap:
+        name: database-sql
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 100Mi
 #end
