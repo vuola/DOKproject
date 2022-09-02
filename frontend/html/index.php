@@ -59,7 +59,7 @@
 			</div>
 		</div>
 
-		<!-- Grocery Cards -->
+		<!-- Task Cards -->
 		<div class="row mt-4">
 			<?php
 				foreach ($data as $qq)
