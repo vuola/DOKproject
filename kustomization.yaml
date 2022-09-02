@@ -16,3 +16,5 @@ images:
     newName: gcr.io/PROJECT_ID/IMAGE/MARIADB
   - name: PROJECT/CRONJOB
     newName: gcr.io/PROJECT_ID/IMAGE/CRONJOB
+  - name: PROJECT/ADMINER
+    newName: gcr.io/PROJECT_ID/IMAGE/ADMINER
