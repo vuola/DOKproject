@@ -71,6 +71,11 @@ spec:
       - name: config-map
         configMap:
           name: database-sql
+          items:
+            - key: init.sql
+              path: init.sql
+            - key: seedlines.sql
+              path: seedlines.sql  
 # end
   volumeClaimTemplates:
   - metadata:
