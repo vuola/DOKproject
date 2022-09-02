@@ -15,17 +15,17 @@ spec:
         app: tsp
     spec:
       containers:
-      - name: frontend-taskproject
-        image: PROJECT/FRONTEND
-        ports: 
-        - name: frontend-port
-          containerPort: 8080
-        imagePullPolicy: Always
-        envFrom:
-        - secretRef:
-            name: database-keys
-        - configMapRef:
-            name: database-env
+#      - name: frontend-taskproject
+#        image: PROJECT/FRONTEND
+#        ports: 
+#        - name: frontend-port
+#          containerPort: 8080
+#        imagePullPolicy: Always
+#        envFrom:
+#        - secretRef:
+#            name: database-keys
+#        - configMapRef:
+#            name: database-env
       - name: backend-taskproject
         image: PROJECT/BACKEND
         ports: 
@@ -37,12 +37,19 @@ spec:
             name: database-keys
         - configMapRef:
             name: database-env
-#      - name: adminer
-#        image: adminer
-#        ports: 
-#        - name: dbtool-port
-#          containerPort: 8080
-#        imagePullPolicy: Always
+# start
+      - name: adminer
+        image: PROJECT/ADMINER
+        ports: 
+        - name: dbtool-port
+          containerPort: 8080
+        imagePullPolicy: Always
+        envFrom:
+        - secretRef:
+            name: database-keys
+        - configMapRef:
+            name: database-env
+# end
       - name: mariadb
         image: PROJECT/MARIADB
         ports:
@@ -60,10 +67,10 @@ spec:
         - name: config-map
           mountPath: /docker-entrypoint-initdb.d
 # start
-#      volumes:
-#      - name: config-map
-#        configMap:
-#          name: database-sql
+      volumes:
+      - name: config-map
+        configMap:
+          name: database-sql
 # end
   volumeClaimTemplates:
   - metadata:
@@ -73,14 +80,3 @@ spec:
       resources:
         requests:
           storage: 100Mi
-#start
-  - metadata:
-      name: config-map
-      configMap:
-        name: database-sql
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
-          storage: 100Mi
-#end
