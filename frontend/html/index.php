@@ -59,18 +59,21 @@
 			</div>
 		</div>
 
-		<!-- Task Cards -->
+		<!-- Grocery Cards -->
 		<div class="row mt-4">
 			<?php
-				foreach ($data as $qq)
-				{
+				if (!empty($data[0]))
+					foreach ($data as $qq)
+					{
 			?>
 
 			<div class="col-lg-4">
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title">
-							<?php isset($qq['description']) ? echo $qq['description'] : echo ''; ?>
+						<?php 
+							echo $qq['description']; 
+						?>							
 						</h5>
 						<h6 class="card-subtitle mb-2 text-muted">
 							<?php echo
@@ -104,7 +107,7 @@
 				</div><br>
 			</div>
 			<?php
-			}
+			};
 			?>
 		</div>
 	</div>

@@ -125,15 +125,17 @@
 	    <h3>Latest entries</h3>
 		<?php
 
-
+			if (!empty($data[0]))
 				foreach ($data as $qq)
 				{
 			?>
 				<div> 
-					<?php echo $qq['description']; ?>
+					<?php 
+						echo $qq['description']; 
+					?>
 				</div>
 			<?php
-				}
+				};
 			?>
 	</div>
 </div>

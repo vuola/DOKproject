@@ -2,20 +2,21 @@
 	include_once 'class/tasks.php';
 	include_once 'class/api_locator.php';
 	$item = new ClientTask($API_URL);
+	if (isset($_GET['id']))
+		$id = $_GET['id']; 
+	else
+		throw new Exception("Update: Task id is missing.", 1);
+	$res = $item->getRow($id);
 
 	if(isset($_POST['btn']))
 	{
-		$item->id = $_GET['id'];
+		$item->id = $id;
 		$item->description=$_POST['description'];
 		$item->owner=$_POST['owner'];
 		$item->status=$_POST['status'];
 		$item->created=$_POST['created'];
 		$item->updateRow();
 		header('location:index.php');
-	}
-	else if(isset($_GET['id']))
-	{
-		$res = $item->getRow($_GET['id']);
 	}
 ?>
 <html>
