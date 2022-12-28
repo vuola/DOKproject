@@ -10,8 +10,8 @@ env:
   IMAGE: dok-project
 
 jobs:
-  setup-build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+  build-publish-deploy:
+    name: Build, Publish and Deploy
     runs-on: ubuntu-latest
     environment: GKEtestbed
 
