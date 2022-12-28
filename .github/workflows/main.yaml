@@ -29,8 +29,8 @@ env:
   IMAGE: dok-project
 
 jobs:
-  build-publish-deploy:
-    name: Setup, Build, Publish, and Deploy
+  setup-and-deploy: 
+    name: Setup and Deploy
     runs-on: ubuntu-latest
 
     # Add "id-token" with the intended permissions.
