@@ -19,14 +19,22 @@ jobs:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
 
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
 
+    # Configure Workload Identity Federation and generate an access token.
     - id: 'auth'
+      name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
-#      with:
-#        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+      with:
+        workload_identity_provider: 'projects/26772408224/locations/global/workloadIdentityPools/my-pool'
+        service_account: 'github-actions@dwk-gke-360910.iam.gserviceaccount.com'
 
     # Setup gcloud CLI
     - name: Set up Cloud SDK
