@@ -29,7 +29,7 @@ env:
   IMAGE: dok-project
 
 jobs:
-  setup-build-publish-deploy:
+  build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
 
