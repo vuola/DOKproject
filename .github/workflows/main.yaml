@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GAR_LOCATION: eu.$GAR_LOCATION-docker.pkg.dev 
-  GKE_CLUSTER: dwk-cluster   
+  GKE_CLUSTER: gke_dwk-gke-360910_europe-north1-b_dwk-cluster   
   GKE_ZONE: europe-north1-b  
 #  DEPLOYMENT_NAME: gke-test # TODO: update deployment name if changed in deployment.yaml or service.yml
   REPOSITORY: dwk-gke-360910
