@@ -1,102 +1,141 @@
-name: Release application
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: Build and Deploy to GKE
 
 on:
   push:
+    branches:
+    - main
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: dwk-cluster
-  GKE_ZONE: europe-north1-b
+  GAR_LOCATION: eu.$GAR_LOCATION-docker.pkg.dev 
+  GKE_CLUSTER: dwk-cluster   
+  GKE_ZONE: europe-north1-b  
+#  DEPLOYMENT_NAME: gke-test # TODO: update deployment name if changed in deployment.yaml or service.yml
+  REPOSITORY: dwk-gke-360910
   IMAGE: dok-project
 
 jobs:
-  build-publish-deploy:
-    name: Build, Publish and Deploy
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
-    environment: GKEtestbed
 
     # Add "id-token" with the intended permissions.
-    # permissions:
-    #   contents: 'read'
-    #   id-token: 'write'
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          credentials_json: '${{ secrets.GKE_SA_KEY }}'
+    # Configure Workload Identity Federation and generate an access token.
+#    - id: 'auth'
+#      name: 'Authenticate to Google Cloud'
+#      uses: 'google-github-actions/auth@v1'
+#      with:
+#        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+#        service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
-        with:
-          project_id: ${{ secrets.GKE_PROJECT }}
- 
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+    # Alternative option - authentication via credentials json
+     - id: 'auth'
+       uses: 'google-github-actions/auth@v1'
+       with:
+         credentials_json: '${{ secrets.GKE_SA_KEY }}'
 
-      # Configure Docker to use the gcloud command-line tool as a credential
-      # helper for authentication
-      - run: |-
-          gcloud --quiet auth configure-docker
-      # Get the GKE credentials so we can deploy to the cluster
-      - run: |-
-          gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
-      # Build the Docker images
-      - name: Build backend
-        run: |-
-          docker build \
-            --tag "gcr.io/$PROJECT_ID/$IMAGE/backend:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
-            ./backend
-      - name: Build frontend
-        run: |-
-          docker build \
-            --tag "gcr.io/$PROJECT_ID/$IMAGE/frontend:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
-            ./frontend
-      - name: Build cronjob
-        run: |-
-          docker build \
-            --tag "gcr.io/$PROJECT_ID/$IMAGE/cronjob:${GITHUB_REF#refs/heads/}-$GITHUB_SHA" \
-            ./cronjob
-      # Push the Docker image to Google Container Registry
-      - name: Publish backend
-        run: |-
-          docker push "gcr.io/$PROJECT_ID/$IMAGE/backend:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
-      - name: Publish frontend
-        run: |-
-          docker push "gcr.io/$PROJECT_ID/$IMAGE/frontend:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
-      - name: Publish cronjob
-        run: |-
-          docker push "gcr.io/$PROJECT_ID/$IMAGE/cronjob:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
-      - name: Pull mariadb from docker
-        run: |-
-          docker pull mariadb:latest
-          docker tag mariadb:latest "gcr.io/$PROJECT_ID/$IMAGE/mariadb:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
-      - name: Publish mariadb to G
-        run: |-
-          docker push "gcr.io/$PROJECT_ID/$IMAGE/mariadb:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
-      - name: Pull adminer from docker
-        run: |-
-          docker pull adminer:latest
-          docker tag adminer:latest "gcr.io/$PROJECT_ID/$IMAGE/adminer:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
-      - name: Publish adminer to G
-        run: |-
-          docker push "gcr.io/$PROJECT_ID/$IMAGE/adminer:${GITHUB_REF#refs/heads/}-$GITHUB_SHA"
+    # Setup gcloud CLI
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
 
-      # Set up kustomize
-      - name: Set up Kustomize
-        uses: imranismail/setup-kustomize@v1
+    # Configure Docker to use the gcloud command-line tool as a credential
+    # helper for authentication (https://cloud.google.com/artifact-registry/docs/docker/authentication)
+    - name: Docker configuration
+      run: |-
+        gcloud --quiet auth configure-docker $GAR_LOCATION-docker.pkg.dev
+    # Get the GKE credentials so we can deploy to the cluster
+    - name: Set up GKE credentials
+      run: |-
+        gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+    # Build the Docker images
+    - name: Build backend
+      run: |-
+        docker build \
+          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/backend:$GITHUB_SHA" \
+          --build-arg GITHUB_SHA="$GITHUB_SHA" \
+          --build-arg GITHUB_REF="$GITHUB_REF" \
+          ./backend
+    - name: Build frontend
+      run: |-
+        docker build \
+          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/frontend:$GITHUB_SHA" \
+          --build-arg GITHUB_SHA="$GITHUB_SHA" \
+          --build-arg GITHUB_REF="$GITHUB_REF" \
+          ./frontend
+    - name: Build cronjob
+      run: |-
+        docker build \
+          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA" \
+          --build-arg GITHUB_SHA="$GITHUB_SHA" \
+          --build-arg GITHUB_REF="$GITHUB_REF" \
+          ./cronjob
 
-      # Deploy the Docker images to the GKE cluster
-      - name: Deploy
-        run: |-
-          kustomize edit set image gcr.io/PROJECT_ID/IMAGE/BACKEND=gcr.io/$PROJECT_ID/$IMAGE/backend:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
-          kustomize edit set image gcr.io/PROJECT_ID/IMAGE/FRONTEND=gcr.io/$PROJECT_ID/$IMAGE/frontend:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
-          kustomize edit set image gcr.io/PROJECT_ID/IMAGE/MARIADB=gcr.io/$PROJECT_ID/$IMAGE/mariadb:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
-          kustomize edit set image gcr.io/PROJECT_ID/IMAGE/CRONJOB=gcr.io/$PROJECT_ID/$IMAGE/cronjob:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
-          kustomize edit set image gcr.io/PROJECT_ID/IMAGE/ADMINER=gcr.io/$PROJECT_ID/$IMAGE/adminer:${GITHUB_REF#refs/heads/}-$GITHUB_SHA
-          kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment
-          kubectl get services -o wide
+    # Push the Docker image to Google Artifact Registry
+    - name: Publish
+      run: |-
+        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA"
+
+    # Push the Docker image to Google Container Registry
+    - name: Publish backend
+      run: |-
+        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/backend:$GITHUB_SHA"
+    - name: Publish frontend
+      run: |-
+        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/frontend:$GITHUB_SHA"
+    - name: Publish cronjob
+      run: |-
+        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA"
+    - name: Pull mariadb from docker
+      run: |-
+        docker pull mariadb:latest
+        docker tag mariadb:latest "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/mariadb:$GITHUB_SHA"
+    - name: Publish mariadb to G
+      run: |-
+        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/mariadb:$GITHUB_SHA"
+    - name: Pull adminer from docker
+      run: |-
+        docker pull adminer:latest
+        docker tag adminer:latest "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/adminer:$GITHUB_SHA"
+    - name: Publish adminer to G
+      run: |-
+        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/adminer:$GITHUB_SHA"
+
+    # Set up kustomize
+    - name: Set up Kustomize
+      run: |-
+        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+        chmod u+x ./kustomize
+    # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      run: |-
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/BACKEND=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/backend:$GITHUB_SHA
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/FRONTEND=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/frontend:$GITHUB_SHA
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/MARIADB=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/mariadb:$GITHUB_SHA
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/CRONJOB=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/ADMINER=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/adminer:$GITHUB_SHA
+
+        ./kustomize build . | kubectl apply -f -
+        kubectl rollout status deployment/$DEPLOYMENT_NAME
+        kubectl get services -o wide
