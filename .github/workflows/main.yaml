@@ -35,6 +35,7 @@ jobs:
       with:
         workload_identity_provider: '//iam.googleapis.com/projects/26772408224/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
         service_account: 'github-actions@dwk-gke-360910.iam.gserviceaccount.com'
+        audience: 'https://iam.googleapis.com/projects/26772408224/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
 #        token_format: 'access_token'
 
     # Setup gcloud CLI
