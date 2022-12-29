@@ -48,6 +48,7 @@ jobs:
     - name: Set up GKE credentials
       run: |-
         gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+
     # Build the Docker images
     - name: Build backend
       run: |-
