@@ -7,7 +7,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GAR_LOCATION: eu.$GAR_LOCATION-docker.pkg.dev 
+  GAR_LOCATION: eu.gcr.io 
   GKE_CLUSTER: dwk-cluster   
   GKE_ZONE: europe-north1-b  
 #  DEPLOYMENT_NAME: gke-test # TODO: update deployment name if changed in deployment.yaml or service.yml
@@ -35,8 +35,6 @@ jobs:
       with:
         workload_identity_provider: 'projects/26772408224/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
         service_account: 'github-actions@dwk-gke-360910.iam.gserviceaccount.com'
-#        audience: 'https://iam.googleapis.com/projects/26772408224/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-        token_format: 'access_token'
 
     # Setup gcloud CLI
     - name: Set up Cloud SDK
