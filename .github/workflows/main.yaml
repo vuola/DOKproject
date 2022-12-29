@@ -60,14 +60,14 @@ jobs:
     - name: Build frontend
       run: |-
         docker build \
-          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/frontend:$GITHUB_SHA" \
+          --tag "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/frontend:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           ./frontend
     - name: Build cronjob
       run: |-
         docker build \
-          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA" \
+          --tag "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           ./cronjob
@@ -75,32 +75,32 @@ jobs:
     # Push the Docker image to Google Artifact Registry
     - name: Publish
       run: |-
-        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA"
+        docker push "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA"
 
     # Push the Docker image to Google Container Registry
     - name: Publish backend
       run: |-
-        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/backend:$GITHUB_SHA"
+        docker push "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/backend:$GITHUB_SHA"
     - name: Publish frontend
       run: |-
-        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/frontend:$GITHUB_SHA"
+        docker push "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/frontend:$GITHUB_SHA"
     - name: Publish cronjob
       run: |-
-        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA"
+        docker push "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA"
     - name: Pull mariadb from docker
       run: |-
         docker pull mariadb:latest
-        docker tag mariadb:latest "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/mariadb:$GITHUB_SHA"
+        docker tag mariadb:latest "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/mariadb:$GITHUB_SHA"
     - name: Publish mariadb to G
       run: |-
-        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/mariadb:$GITHUB_SHA"
+        docker push "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/mariadb:$GITHUB_SHA"
     - name: Pull adminer from docker
       run: |-
         docker pull adminer:latest
-        docker tag adminer:latest "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/adminer:$GITHUB_SHA"
+        docker tag adminer:latest "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/adminer:$GITHUB_SHA"
     - name: Publish adminer to G
       run: |-
-        docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/adminer:$GITHUB_SHA"
+        docker push "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/adminer:$GITHUB_SHA"
 
     # Set up kustomize
     - name: Set up Kustomize
@@ -110,11 +110,11 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/BACKEND=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/backend:$GITHUB_SHA
-        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/FRONTEND=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/frontend:$GITHUB_SHA
-        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/MARIADB=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/mariadb:$GITHUB_SHA
-        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/CRONJOB=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA
-        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/ADMINER=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/adminer:$GITHUB_SHA
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/BACKEND=$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/backend:$GITHUB_SHA
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/FRONTEND=$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/frontend:$GITHUB_SHA
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/MARIADB=$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/mariadb:$GITHUB_SHA
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/CRONJOB=$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/cronjob:$GITHUB_SHA
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/ADMINER=$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/adminer:$GITHUB_SHA
 
         ./kustomize build . | kubectl apply -f -
         kubectl rollout status deployment/$DEPLOYMENT_NAME
