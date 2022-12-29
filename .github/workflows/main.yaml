@@ -8,7 +8,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GAR_LOCATION: eu.$GAR_LOCATION-docker.pkg.dev 
-  GKE_CLUSTER: gke_dwk-gke-360910_europe-north1-b_dwk-cluster   
+  GKE_CLUSTER: dwk-cluster   
   GKE_ZONE: europe-north1-b  
 #  DEPLOYMENT_NAME: gke-test # TODO: update deployment name if changed in deployment.yaml or service.yml
   REPOSITORY: dwk-gke-360910
@@ -26,15 +26,16 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: 'actions/checkout@v3'
 
     # Configure Workload Identity Federation and generate an access token.
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
-        workload_identity_provider: 'https://iam.googleapis.com/projects/26772408224/locations/global/workloadIdentityPools/my-pool'
+        workload_identity_provider: '//iam.googleapis.com/projects/26772408224/locations/global/workloadIdentityPools/my-pool'
         service_account: 'github-actions@dwk-gke-360910.iam.gserviceaccount.com'
+        token_format: 'access_token'
 
     # Setup gcloud CLI
     - name: Set up Cloud SDK
