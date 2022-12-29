@@ -47,7 +47,7 @@ jobs:
     # Get the GKE credentials so we can deploy to the cluster
     - name: Install SDK
       run: |-
-        sudo snap install google-cloud-cli
+        sudo snap --classic install google-cloud-cli
     - name: Install new GKE authentication plugin
       run: |-
         sudo apt-get -y install google-cloud-sdk-gke-gcloud-auth-plugin
