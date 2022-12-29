@@ -53,7 +53,7 @@ jobs:
     - name: Build backend
       run: |-
         docker build \
-          --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE/backend:$GITHUB_SHA" \
+          --tag "$GAR_LOCATION-docker.pkg.dev/$REPOSITORY/$IMAGE/backend:$GITHUB_SHA" \
           --build-arg GITHUB_SHA="$GITHUB_SHA" \
           --build-arg GITHUB_REF="$GITHUB_REF" \
           ./backend
