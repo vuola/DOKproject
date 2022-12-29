@@ -33,10 +33,10 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
-        workload_identity_provider: '//iam.googleapis.com/projects/26772408224/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        workload_identity_provider: 'projects/26772408224/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
         service_account: 'github-actions@dwk-gke-360910.iam.gserviceaccount.com'
-        audience: 'https://iam.googleapis.com/projects/26772408224/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-#        token_format: 'access_token'
+#        audience: 'https://iam.googleapis.com/projects/26772408224/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        token_format: 'access_token'
 
     # Setup gcloud CLI
     - name: Set up Cloud SDK
@@ -46,7 +46,7 @@ jobs:
     # helper for authentication (https://cloud.google.com/artifact-registry/docs/docker/authentication)
     - name: Docker configuration
       run: |-
-        gcloud --quiet auth configure-docker $GAR_LOCATION-docker.pkg.dev
+        gcloud --quiet auth configure-docker
     # Get the GKE credentials so we can deploy to the cluster
     - name: Set up GKE credentials
       run: |-
