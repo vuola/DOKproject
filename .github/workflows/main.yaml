@@ -6,7 +6,6 @@ on:
     - main
 
 env:
-#  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GAR_LOCATION: eu.gcr.io 
   GKE_CLUSTER: dwk-cluster   
   GKE_ZONE: europe-north1-b  
