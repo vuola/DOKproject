@@ -45,9 +45,9 @@ jobs:
       run: |-
         gcloud --quiet auth configure-docker
     # Get the GKE credentials so we can deploy to the cluster
-    - name: Install SDK
+    - name: Update package manager
       run: |-
-        sudo snap --classic install google-cloud-cli
+        sudo apt-get -y update
     - name: Install new GKE authentication plugin
       run: |-
         sudo apt-get -y install google-cloud-sdk-gke-gcloud-auth-plugin
