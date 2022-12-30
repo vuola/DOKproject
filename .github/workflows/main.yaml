@@ -7,8 +7,8 @@ on:
 
 env:
   GAR_LOCATION: eu.gcr.io 
-  GKE_CLUSTER: dwk-cluster   
-  GKE_ZONE: europe-north1-b  
+  GKE_CLUSTER: 'dwk-cluster'  
+  GKE_ZONE: 'europe-north1-b'
   REPOSITORY: dokproject
   PROJECT: dwk-gke-360910
   VERSION: '0.0.1'
@@ -49,8 +49,8 @@ jobs:
     - id: 'get-credentials'
       uses: 'google-github-actions/get-gke-credentials@v1'
       with:
-        cluster_name: '$GKE_CLUSTER'
-        location: '$GKE_ZONE'
+        cluster_name: $GKE_CLUSTER
+        location: $GKE_ZONE
 
     # Build the Docker images
     - name: Build backend
