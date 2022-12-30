@@ -45,9 +45,12 @@ jobs:
       run: |-
         gcloud --quiet auth configure-docker
     # Get the GKE credentials so we can deploy to the cluster
+    - name: Update SDK for new GKE authentication plugin
+      run: |-
+        echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - && apt-get update -y && apt-get install google-cloud-cli -y
     - name: Install new GKE authentication plugin
       run: |-
-        sudo apt-get -y update & sudo apt-get -y install gke-gcloud-auth-plugin
+        sudo apt-get -y install google-cloud-sdk-gke-gcloud-auth-plugin
     - name: Set up GKE credentials
       run: |-
         gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
