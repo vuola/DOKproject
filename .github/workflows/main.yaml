@@ -108,5 +108,5 @@ jobs:
         ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/CRONJOB=$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:$VERSION
         ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/ADMINER=$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:$VERSION
         ./kustomize build . | kubectl apply -f -
-        kubectl rollout status deployment/$DEPLOYMENT_NAME
+        kubectl rollout status deployment
         kubectl get services -o wide
