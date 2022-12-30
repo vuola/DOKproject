@@ -47,10 +47,7 @@ jobs:
     # Get the GKE credentials so we can deploy to the cluster
     - name: Update SDK for new GKE authentication plugin
       run: |-
-        echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-    - name: Install new GKE authentication plugin
-      run: |-
-        sudo apt-get -y install google-cloud-sdk-gke-gcloud-auth-plugin
+        echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list & sudo apt-get -y install google-cloud-sdk-gke-gcloud-auth-plugin
     - name: Set up GKE credentials
       run: |-
         gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
