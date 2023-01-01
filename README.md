@@ -1,3 +1,2 @@
 # DOKproject
-# new line
 #
