@@ -103,11 +103,11 @@ jobs:
         kubectl create namespace ${GITHUB_REF#refs/heads/} || true
         kubectl config set-context --current --namespace=${GITHUB_REF#refs/heads/}
         kustomize edit set namespace ${GITHUB_REF#refs/heads/}
-        ./kustomize edit set image $PROJECT/BACKEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION
-        ./kustomize edit set image $PROJECT/FRONTEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION
-        ./kustomize edit set image $PROJECT/MARIADB=$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION
-        ./kustomize edit set image $PROJECT/CRONJOB=$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION
-        ./kustomize edit set image $PROJECT/ADMINER=$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image PROJECT/BACKEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image PROJECT/FRONTEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image PROJECT/MARIADB=$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image PROJECT/CRONJOB=$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image PROJECT/ADMINER=$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION
         kubectl apply -k .
         kubectl rollout status deployment
         kubectl get services -o wide
