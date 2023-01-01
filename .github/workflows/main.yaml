@@ -105,7 +105,6 @@ jobs:
         ./kustomize edit set image $PROJECT/MARIADB=$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION
         ./kustomize edit set image $PROJECT/CRONJOB=$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION
         ./kustomize edit set image $PROJECT/ADMINER=$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION
-#        ./kustomize build .
         kubectl apply -k .
         kubectl rollout status deployment
         kubectl get services -o wide
