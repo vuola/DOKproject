@@ -3,7 +3,7 @@ name: Build and Deploy to GKE
 on:
   push:
     branches:
-    - ${GITHUB_REF#refs/heads/}
+    - "${GITHUB_REF#refs/heads/}"
 
 env:
   GAR_LOCATION: eu.gcr.io 
