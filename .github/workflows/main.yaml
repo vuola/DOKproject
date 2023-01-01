@@ -106,5 +106,5 @@ jobs:
         ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/CRONJOB=$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION
         ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/ADMINER=$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION
         ./kustomize build . | kubectl apply -f -
-        kubectl rollout status deployment
+        kubectl rollout status deployment $REPOSITORY
         kubectl get services -o wide
