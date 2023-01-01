@@ -2,8 +2,6 @@ name: Build and Deploy to GKE
 
 on:
   push:
-    branches:
-    - ${{ github.ref }}
 
 env:
   GAR_LOCATION: eu.gcr.io 
