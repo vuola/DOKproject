@@ -13,7 +13,15 @@ if (file_exists($img)) {
 }
 else {
     // No file, retrieve one
-    file_put_contents($img, file_get_contents($url));
+    $context = stream_context_create(
+        array(
+            "http" => array(
+                "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
+            )
+        )
+    );    
+    $content = file_get_contents($url, false, $context);
+    file_put_contents($img, $content);
 }
  
 $content = file_get_contents($img);
