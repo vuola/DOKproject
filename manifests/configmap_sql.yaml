@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: database-sql
-  namespace: project
+#  namespace: project
 data:
   init.sql: |
     SET NAMES utf8;

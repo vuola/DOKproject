@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: taskproject-ss
-  namespace: project
+#  namespace: project
 spec:
   serviceName: "taskproject-svc"
   replicas: 1
