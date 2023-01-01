@@ -100,11 +100,11 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        ./kustomize edit set image PROJECT/BACKEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION
-        ./kustomize edit set image PROJECT/FRONTEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION
-        ./kustomize edit set image PROJECT/MARIADB=$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION
-        ./kustomize edit set image PROJECT/CRONJOB=$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION
-        ./kustomize edit set image PROJECT/ADMINER=$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/BACKEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/FRONTEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/MARIADB=$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/CRONJOB=$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/ADMINER=$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION
         ./kustomize build . | kubectl apply -f -
         kubectl rollout status deployment
         kubectl get services -o wide
