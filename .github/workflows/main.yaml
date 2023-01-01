@@ -54,43 +54,43 @@ jobs:
     - name: Build backend
       run: |-
         docker build \
-          --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:$VERSION" \
+          --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION" \
           ./backend
     - name: Build frontend
       run: |-
         docker build \
-          --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:$VERSION" \
+          --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION" \
           ./frontend
     - name: Build cronjob
       run: |-
         docker build \
-          --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:$VERSION" \
+          --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION" \
           ./cronjob
 
     # Push the Docker image to Google Artifact Registry
     - name: Publish backend
       run: |-
-        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:$VERSION"
+        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Publish frontend
       run: |-
-        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:$VERSION"
+        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Publish cronjob
       run: |-
-        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:$VERSION"
+        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Pull mariadb from docker
       run: |-
         docker pull mariadb:latest
-        docker tag mariadb:latest "$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:$VERSION"
+        docker tag mariadb:latest "$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Publish mariadb to G
       run: |-
-        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:$VERSION"
+        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Pull adminer from docker
       run: |-
         docker pull adminer:latest
-        docker tag adminer:latest "$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:$VERSION"
+        docker tag adminer:latest "$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Publish adminer to G
       run: |-
-        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:$VERSION"
+        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION"
 
     # Set up kustomize
     - name: Set up Kustomize
@@ -100,11 +100,11 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
-        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/BACKEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:$VERSION
-        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/FRONTEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:$VERSION
-        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/MARIADB=$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:$VERSION
-        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/CRONJOB=$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:$VERSION
-        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/ADMINER=$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:$VERSION
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/BACKEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/FRONTEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/MARIADB=$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/CRONJOB=$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION
+        ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE/ADMINER=$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION
         ./kustomize build . | kubectl apply -f -
         kubectl rollout status deployment
         kubectl get services -o wide
