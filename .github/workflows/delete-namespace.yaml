@@ -1,0 +1,10 @@
+name: delete-namespace
+on: 
+  delete
+jobs:
+  delete-namespace:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete namespace
+        run: |-
+          kubectl delete namespace ${GITHUB_REF#refs/heads/}
