@@ -1,7 +1,9 @@
 name: Build and Deploy to GKE
 
 on:
-  delete
+  delete:
+    paths_ignore:
+      - '.github/workflows/**'
 
 env:
   GAR_LOCATION: eu.gcr.io 
@@ -56,6 +58,6 @@ jobs:
     # Deploy the Docker image to the GKE cluster
     - name: Delete
       run: |-
-        kubectl delete namespace ${GITHUB_REF#refs/heads/} || true
+        kubectl delete namespace ${{ github.ref_name }} || true
 #        kubectl config set-context --current --namespace=${GITHUB_REF#refs/heads/}
 #        kustomize edit set namespace ${GITHUB_REF#refs/heads/}

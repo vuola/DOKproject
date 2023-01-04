@@ -2,6 +2,8 @@ name: Build and Deploy to GKE
 
 on:
   push:
+    paths_ignore:
+      - '.github/workflows/**'
 
 env:
   GAR_LOCATION: eu.gcr.io 
