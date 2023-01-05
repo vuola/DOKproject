@@ -8,7 +8,7 @@
 #       - The Google product is Google Cloud SQL
 #   pros & cons:
 #       required work, initialize/maintain: 
-#           - 
+#           -  
 #           - 
 #       cost, initialize/maintain:
 #           -
