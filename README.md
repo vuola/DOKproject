@@ -1,4 +1,4 @@
-# Excercise 3.06
+# Exercise 3.06
 
 ## Comparison of DBaaS and Persistent Volume storage
 
@@ -24,13 +24,13 @@
            - requires knowledge of database containers
            - several details need attention in DB startup sequences, configuration,
            password management
-           - full control of DB instance once user is accustomed to a containerized product
+           - full control of DB instance once user is accustomed to a specific DB container
         cost, initialize/maintain:
-           - complicated formula as part of GKE cost, storage is one price driver.
+           - complicated pricing formula as part of GKE pricing, storage block size is one driver.
            - GKE has support for regional deployment
-           - same latencies as any other GKE pods
-           - solution providing shared data for multiple frontend instances may be challenging
+           - has same latency drivers as any other GKE pod
+           - solutions providing shared data for multiple frontend instances may be challenging to build
         backup methods, ease of use:
            - backup and encryption require special attention
-           - smart designer can build own logics for scaling and maintenance
+           - smart designer can build custom logics for scaling and maintenance
 
