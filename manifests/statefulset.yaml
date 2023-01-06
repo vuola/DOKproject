@@ -38,16 +38,16 @@ spec:
             name: database-keys
         - configMapRef:
             name: database-env
-        - name: adminer
-          image: PROJECT/ADMINER
-          ports: 
-          - name: dbtool-port
-            containerPort: 8080
-          imagePullPolicy: Always
-          envFrom:
-          - secretRef:
+      - name: adminer
+        image: PROJECT/ADMINER
+        ports: 
+        - name: dbtool-port
+          containerPort: 8080
+        imagePullPolicy: Always
+        envFrom:
+        - secretRef:
             name: database-keys
-          - configMapRef:
+        - configMapRef:
             name: database-env
 # Old containerized DB 
 #      - name: mariadb
@@ -77,27 +77,27 @@ spec:
       - name: cloud-sql-proxy
       # It is recommended to use the latest version of the Cloud SQL proxy
       # Make sure to update on a regular schedule!
-      image: gcr.io/cloudsql-docker/gce-proxy:1.28.0 # make sure the use the latest version
-      command:
-        - "/cloud_sql_proxy"
-        - "-ip_address_types=PRIVATE"
+        image: gcr.io/cloudsql-docker/gce-proxy:1.28.0 # make sure the use the latest version
+        command:
+          - "/cloud_sql_proxy"
+          - "-ip_address_types=PRIVATE"
       # By default, the proxy will write all logs to stderr.
       # Write all logs to stdout (except errors
       # which will still go to stderr)
         - "-log_debug_stdout"
       # Default ports MySQL: 3306, Postgres: 5432, SQLServer: 1433
         - "-instances=dwk-gke-360910:europe-north1:instance-for-taskdb=tcp:3306"
-      securityContext:
+        securityContext:
       # The default Cloud SQL proxy image runs as the
       # "nonroot" user and group (uid: 65532) by default.
-        runAsNonRoot: true
+          runAsNonRoot: true
       # You should use resource requests/limits as a best practice to prevent
       # pods from consuming too many resources and affecting the execution of
       # other pods. You should adjust the following values based on what your
       # application needs. For details, see
       # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-      resources:
-        requests:
+        resources:
+          requests:
           # The proxy's memory use scales linearly with the number of active
           # connections. Fewer open connections will use less memory. Adjust
           # this value based on your application's requirements.
