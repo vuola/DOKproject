@@ -4,8 +4,6 @@ metadata:
   name: taskproject-ss
 #  namespace: project
 spec:
-  serviceName: "taskproject-svc"
-  replicas: 1
   selector:
     matchLabels:
       app: tsp
