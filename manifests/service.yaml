@@ -6,7 +6,7 @@ metadata:
   labels:
     app: tsp
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: tsp
   ports:
