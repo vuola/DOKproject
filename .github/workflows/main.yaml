@@ -78,13 +78,6 @@ jobs:
     - name: Publish cronjob
       run: |-
         docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION"
-    - name: Pull mariadb from docker
-      run: |-
-        docker pull mariadb:latest
-        docker tag mariadb:latest "$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION"
-    - name: Publish mariadb to G
-      run: |-
-        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Pull adminer from docker
       run: |-
         docker pull adminer:latest
@@ -106,7 +99,6 @@ jobs:
         kustomize edit set namespace ${GITHUB_REF#refs/heads/}
         ./kustomize edit set image dwk-gke-360910/BACKEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION
         ./kustomize edit set image dwk-gke-360910/FRONTEND=$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION
-        ./kustomize edit set image dwk-gke-360910/MARIADB=$GAR_LOCATION/$PROJECT/$REPOSITORY/mariadb:${GITHUB_REF#refs/heads/}-$VERSION
         ./kustomize edit set image dwk-gke-360910/CRONJOB=$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION
         ./kustomize edit set image dwk-gke-360910/ADMINER=$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION
         kubectl apply -k .

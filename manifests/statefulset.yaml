@@ -100,16 +100,9 @@ spec:
             # The proxy's memory use scales linearly with the number of active
             # connections. Fewer open connections will use less memory. Adjust
             # this value based on your application's requirements.
-            memory: "100Mi"
+            memory: "2Gi"
             # The proxy's CPU use scales linearly with the amount of IO between
             # the database and the application. Adjust this value based on your
             # application's requirements.
-            cpu:    "1"    
-  volumeClaimTemplates:
-  - metadata:
-      name: mariadb-disk
-    spec:
-      accessModes: ["ReadWriteOnce"]
-      resources:
-        requests:
-          storage: 100Mi
+            cpu:    "4"
+            
