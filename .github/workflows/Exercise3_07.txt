@@ -17,6 +17,8 @@ PROVIDE THE GOOGLE SERVICE ACCOUNT (GSA) TO THE Cloud SQL Auth proxy
     --member="serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com" \
     --role="roles/logging.logWriter"
 
+    ADD ALSO CLOUDSQL USER RIGHTS TO Compute Engine default service account
+
 ENABLE GKE WORKLOAD IDENTITY 
 
     UPDATE EXISTING CLUSTER TO USE WORKLOAD IDENTITY
