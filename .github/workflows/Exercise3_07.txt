@@ -1,6 +1,7 @@
 
 ACTIVATE Cloud SQL Admin API
 
+
 >> gcloud sql instances describe instance-for-taskdb                                      exercise307  ✭ ✱
 API [sqladmin.googleapis.com] not enabled on project [26772408224]. Would you like to enable and retry (this will 
 take a few minutes)? (y/N)?  y
