@@ -44,6 +44,10 @@ gcloud projects add-iam-policy-binding dwk-gke-360910 \
 --role="roles/cloudsql.client"
 
 gcloud projects add-iam-policy-binding dwk-gke-360910 \
+--member="serviceAccount:service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com" \
+--role="roles/cloudsql.editor"
+
+gcloud projects add-iam-policy-binding dwk-gke-360910 \
 --member="serviceAccount:p26772408224-mhoyvp@gcp-sa-cloud-sql.iam.gserviceaccount.com" \
 --role="roles/logging.logWriter"
 
@@ -58,16 +62,130 @@ BUILD GSA-KSA BINDINGS
     ENABLE IAM BINDING BETWEEN GSA AND KSA
 
 gcloud iam service-accounts add-iam-policy-binding \
-  --role="roles/iam.workloadIdentityUser" \
-  --member="serviceAccount:dwk-gke-360910.svc.id.goog[exercise307/ksa-cloud-sql]" \
-  p26772408224-mhoyvp@gcp-sa-cloud-sql.iam.gserviceaccount.com
+--role="roles/iam.workloadIdentityUser" \
+--member="serviceAccount:dwk-gke-360910.svc.id.goog[exercise307/ksa-cloud-sql]" \
+service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
  
     ADD AN ANNOTATION TO THE KSA NAME
 
 kubectl annotate serviceaccount \
-  ksa-cloud-sql  \
-  iam.gke.io/gcp-service-account=p26772408224-mhoyvp@gcp-sa-cloud-sql.iam.gserviceaccount.com
+ksa-cloud-sql  \
+iam.gke.io/gcp-service-account=service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
 
 UPDATE manifests/
 
     INCLUDE SIDECAR 'cloud-sql-proxy' INTO THE STATEFULSET. FOR PODS, THE MySQL ADDRESS IS THEN 127.0.0.1:3306
+
+
+
+    *******************
+
+    Updated IAM policy for project [dwk-gke-360910].
+bindings:
+- members:
+  - user:markus.vuolahti@gmail.com
+  role: roles/artifactregistry.admin
+- members:
+  - user:markus.vuolahti@gmail.com
+  role: roles/cloudsql.admin
+- members:
+  - user:markus.vuolahti@gmail.com
+  role: roles/datamigration.admin
+- members:
+  - user:markus.vuolahti@gmail.com
+  role: roles/iam.securityAdmin
+- members:
+  - user:markus.vuolahti@gmail.com
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - user:markus.vuolahti@gmail.com
+  role: roles/iam.serviceAccountKeyAdmin
+- members:
+  - user:markus.vuolahti@gmail.com
+  role: roles/owner
+- members:
+  - user:markus.vuolahti@gmail.com
+  role: roles/resourcemanager.organizationAdmin
+- members:
+  - user:markus.vuolahti@gmail.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - user:markus.vuolahti@gmail.com
+  role: roles/storage.objectAdmin
+- members:
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  role: roles/artifactregistry.repoAdmin
+- members:
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  - serviceAccount:service-26772408224@gcp-sa-artifactregistry.iam.gserviceaccount.com
+  role: roles/artifactregistry.serviceAgent
+- members:
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  role: roles/cloudfunctions.developer
+- members:
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  role: roles/container.developer
+- members:
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  role: roles/container.hostServiceAgentUser
+- members:
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  role: roles/iam.workloadIdentityUser
+- members:
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - serviceAccount:service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
+  role: roles/cloudsql.editor
+- members:
+  - serviceAccount:dwk-gke-360910.svc.id.goog[exercise307/ksa-cloud-sql]
+  role: roles/iam.workloadIdentityUser
+- members:
+  - serviceAccount:26772408224@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-26772408224@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:service-26772408224@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-26772408224@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:service-26772408224@gcp-sa-datamigration.iam.gserviceaccount.com
+  role: roles/datamigration.serviceAgent
+- members:
+  - serviceAccount:service-26772408224@gcp-sa-networkmanagement.iam.gserviceaccount.com
+  role: roles/networkmanagement.serviceAgent
+- members:
+  - serviceAccount:service-26772408224@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/pubsub.serviceAgent
+- members:
+  - serviceAccount:service-26772408224@service-networking.iam.gserviceaccount.com
+  role: roles/servicenetworking.serviceAgent
+- members:
+  - serviceAccount:26772408224-compute@developer.gserviceaccount.com
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  - serviceAccount:p26772408224-mhoyvp@gcp-sa-cloud-sql.iam.gserviceaccount.com
+  - serviceAccount:service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
+  role: roles/cloudsql.client
+- members:
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  - serviceAccount:p26772408224-mhoyvp@gcp-sa-cloud-sql.iam.gserviceaccount.com
+  - serviceAccount:service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:26772408224-compute@developer.gserviceaccount.com
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  role: roles/cloudsql.instanceUser
+- members:
+  - serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com
+  - serviceAccount:service-26772408224@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:26772408224-compute@developer.gserviceaccount.com
+  - serviceAccount:26772408224@cloudservices.gserviceaccount.com
+  role: roles/editor
+etag: BwXxxELJXYc=
+version: 1

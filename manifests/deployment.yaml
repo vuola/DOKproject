@@ -14,17 +14,17 @@ spec:
     spec:
       serviceAccountName: ksa-cloud-sql
       containers:
-#      - name: frontend-taskproject
-#        image: PROJECT/FRONTEND
-#        ports: 
-#        - name: frontend-port
-#          containerPort: 8080
-#        imagePullPolicy: Always
-#        envFrom:
-#        - secretRef:
-#            name: database-keys
-#        - configMapRef:
-#            name: database-env
+      - name: frontend-taskproject
+        image: PROJECT/FRONTEND
+        ports: 
+        - name: frontend-port
+          containerPort: 8080
+        imagePullPolicy: Always
+        envFrom:
+        - secretRef:
+            name: database-keys
+        - configMapRef:
+            name: database-env
       - name: backend-taskproject
         image: PROJECT/BACKEND
         ports: 
@@ -36,41 +36,6 @@ spec:
             name: database-keys
         - configMapRef:
             name: database-env
-      - name: adminer
-        image: PROJECT/ADMINER
-        ports: 
-        - name: dbtool-port
-          containerPort: 8080
-        imagePullPolicy: Always
-        envFrom:
-        - secretRef:
-            name: database-keys
-        - configMapRef:
-            name: database-env
-# Old containerized DB 
-#      - name: mariadb
-#        image: PROJECT/MARIADB
-#        ports:
-#        - name: mariadb-port
-#          containerPort: 3306
-#        envFrom:
-#        - secretRef:
-#            name: database-keys
-#        - configMapRef:
-#            name: database-env
-#        volumeMounts:
-#        - name: mariadb-disk
-#          mountPath: /var/lib/mysql
-#          subPath: mysql
-#        - name: config-map
-#          mountPath: /docker-entrypoint-initdb.d
-#      volumes:
-#      - name: config-map
-#        configMap:
-#          name: database-sql
-#          items:
-#            - key: init.sql
-#              path: init.sql
       - name: cloud-sql-proxy
       # It is recommended to use the latest version of the Cloud SQL proxy
       # Make sure to update on a regular schedule!
