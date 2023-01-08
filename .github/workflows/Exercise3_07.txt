@@ -6,21 +6,14 @@ ACTIVATE Cloud SQL Admin API
 API [sqladmin.googleapis.com] not enabled on project [26772408224]. Would you like to enable and retry (this will 
 take a few minutes)? (y/N)?  y
 
-PROVIDE THE GOOGLE SERVICE ACCOUNT (GSA) TO THE Cloud SQL Auth proxy
+ENABLE WORKLOAD IDENTITY AT CLUSTER STARTUP
 
-    ADD REQUIRED IAM ROLES TO THE SERVICE ACCOUNT:
+gcloud container clusters create dwk-cluster \
+--zone=europe-north1-b \
+--region=europe-north1 \
+--workload-pool=dwk-gke-360910.svc.id.goog
 
-    gcloud projects add-iam-policy-binding dwk-gke-360910 \
-    --member="serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com" \
-    --role="roles/cloudsql.client"
-
-    gcloud projects add-iam-policy-binding dwk-gke-360910 \
-    --member="serviceAccount:github-actions@dwk-gke-360910.iam.gserviceaccount.com" \
-    --role="roles/logging.logWriter"
-
-    ADD ALSO CLOUDSQL USER RIGHTS TO Compute Engine default service account
-
-ENABLE GKE WORKLOAD IDENTITY 
+... OR ENABLE GKE WORKLOAD IDENTITY FOR EXISTING CLUSTER
 
     UPDATE EXISTING CLUSTER TO USE WORKLOAD IDENTITY
 
@@ -28,22 +21,53 @@ ENABLE GKE WORKLOAD IDENTITY
     --zone=europe-north1-b
     --workload-pool=dwk-gke-360910.svc.id.goog
 
+    UPDATE CURRENT NODEPOOL TO USE WORKLOAD IDENTITY
+
+    gcloud container node-pools update default-pool \
+    --zone=europe-north1-b \
+    --cluster=dwk-cluster \
+    --workload-metadata=GKE_METADATA
+
+ENABLE THE CLUSTER AS THE DEFAULT CLUSTER 
+
+gcloud container clusters get-credentials dwk-cluster \
+--region europe-north1-b
+
+SET UP A GOOGLE SERVICE ACCOUNT (GSA) 
+
+gcloud iam service-accounts create service-account-GKE-CSQL \
+--display-name="Service account providing GKE access to CSQL"
+
+PROVIDE THE GSA WITH IAM ACCESS RIGHTS:
+
+gcloud projects add-iam-policy-binding dwk-gke-360910 \
+--member="serviceAccount:service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com" \
+--role="roles/cloudsql.client"
+
+gcloud projects add-iam-policy-binding dwk-gke-360910 \
+--member="serviceAccount:service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com" \
+--role="roles/logging.logWriter"
+
+    ?? ADD ALSO CLOUDSQL USER RIGHTS TO Compute Engine default service account ??
+
+BUILD GSA-KSA BINDINGS
+
     ADD KUBERNETES SERVICE ACCOUNT (KSA) TO CLUSTER using KSA name 'ksa-cloud-sql'
 
     kubectl apply -f manifests/service-account.yaml
 
     ENABLE IAM BINDING BETWEEN GSA AND KSA
 
-    gcloud iam service-accounts add-iam-policy-binding \
-    --role="roles/iam.workloadIdentityUser" \
-    --member="serviceAccount:dwk-gke-360910.svc.id.goog[exercise307/ksa-cloud-sql]" \
-    github-actions@dwk-gke-360910.iam.gserviceaccount.com
-   
+gcloud iam service-accounts add-iam-policy-binding \
+  --role="roles/iam.workloadIdentityUser" \
+  --member="serviceAccount:dwk-gke-360910.svc.id.goog[exercise307/ksa-cloud-sql]" \
+  service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
+ 
     ADD AN ANNOTATION TO THE KSA NAME
 
-    kubectl annotate serviceaccount \
-    ksa-cloud-sql \
-    iam.gke.io/gcp-service-account=github-actions@dwk-gke-360910.iam.gserviceaccount.com
+kubectl annotate serviceaccount \
+  ksa-cloud-sql  \
+  iam.gke.io/gcp-service-account=service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
 
 UPDATE manifests/
 
