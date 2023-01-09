@@ -83,7 +83,7 @@ class Database
                 $e
             );
         }
-
+        sprintf('Database coonection pointer is %s', $conn);
         return $conn;
     }
 }
