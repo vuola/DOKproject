@@ -14,6 +14,7 @@
     $owner = isset($_GET['owner']) ? $_GET['owner'] : '';
 
     if (($len == '') && ($owner == ''))
+        sprintf('! PING !');
         $stmt = $items->getTasks();
     else
         $stmt = $items->getLatestTasks($len, $owner);
