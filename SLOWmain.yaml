@@ -10,7 +10,7 @@ env:
   GAR_LOCATION: eu.gcr.io 
   REPOSITORY: dokproject
   PROJECT: dwk-gke-360910
-  VERSION: '0.0.1'
+  VERSION: '0.0.9'
 
 jobs:
   setup-build-publish-deploy: 
@@ -50,6 +50,41 @@ jobs:
       with:
         cluster_name: 'dwk-cluster'
         location: 'europe-north1-b'
+
+    # Build the Docker images
+    - name: Build backend
+      run: |-
+        docker build \
+          --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION" \
+          ./backend
+    - name: Build frontend
+      run: |-
+        docker build \
+          --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION" \
+          ./frontend
+    - name: Build cronjob
+      run: |-
+        docker build \
+          --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION" \
+          ./cronjob
+
+    # Push the Docker image to Google Artifact Registry
+    - name: Publish backend
+      run: |-
+        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION"
+    - name: Publish frontend
+      run: |-
+        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION"
+    - name: Publish cronjob
+      run: |-
+        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION"
+    - name: Pull adminer from docker
+      run: |-
+        docker pull adminer:latest
+        docker tag adminer:latest "$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION"
+    - name: Publish adminer to G
+      run: |-
+        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/adminer:${GITHUB_REF#refs/heads/}-$VERSION"
 
     # Set up kustomize
     - name: Set up Kustomize

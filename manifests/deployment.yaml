@@ -14,10 +14,11 @@ spec:
     spec:
       serviceAccountName: ksa-cloud-sql
       containers:
-      - name: frontend-taskproject
-        image: PROJECT/FRONTEND
+#
+      - name: adminer
+        image: PROJECT/ADMINER
         ports: 
-        - name: frontend-port
+        - name: dbtool-port
           containerPort: 8080
         imagePullPolicy: Always
         envFrom:
@@ -25,6 +26,19 @@ spec:
             name: database-keys
         - configMapRef:
             name: database-env
+#
+#      - name: frontend-taskproject
+#        image: PROJECT/FRONTEND
+#        ports: 
+#        - name: frontend-port
+#          containerPort: 8080
+#        imagePullPolicy: Always
+#        envFrom:
+#        - secretRef:
+#            name: database-keys
+#        - configMapRef:
+#            name: database-env
+#
       - name: backend-taskproject
         image: PROJECT/BACKEND
         ports: 
