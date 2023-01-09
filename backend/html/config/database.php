@@ -88,3 +88,4 @@ class Database
     }
 }
 # [END cloud_sql_mysql_pdo_connect_tcp]
+?>
