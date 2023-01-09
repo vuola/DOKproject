@@ -189,3 +189,39 @@ bindings:
   role: roles/editor
 etag: BwXxxELJXYc=
 version: 1
+
+
+NOTICE: PHP message: PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /var/www/html/class/tasks.php:26
+Stack trace:
+#0 /var/www/html/api/read.php(17): Task->getTasks()
+#1 {main}
+  thrown in /var/www/html/class/tasks.php on line 26
+10.28.0.1 -  [09/Jan/2023:09:16:49 +0000] "GET /api/read.php HTTP/1.1" 500 []
+NOTICE: PHP message: PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /var/www/html/class/tasks.php:26
+Stack trace:
+#0 /var/www/html/api/read.php(17): Task->getTasks()
+#1 {main}
+  thrown in /var/www/html/class/tasks.php on line 26
+10.28.0.1 -  [09/Jan/2023:09:17:03 +0000] "GET /api/read.php HTTP/1.1" 500 []
+2023/01/09 09:17:03 [error] 10#10: *18619 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /var/www/html/class/tasks.php:26
+Stack trace:
+#0 /var/www/html/api/read.php(17): Task->getTasks()
+#1 {main}
+  thrown in /var/www/html/class/tasks.php on line 26" while reading response header from upstream, client: 10.28.0.1, server: _, request: "GET /api/read.php HTTP/1.1", upstream: "fastcgi://unix:/run/php-fpm.sock:", host: "taskproject-svc:8081"
+NOTICE: PHP message: PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /var/www/html/class/tasks.php:26
+Stack trace:
+#0 /var/www/html/api/read.php(17): Task->getTasks()
+#1 {main}
+  thrown in /var/www/html/class/tasks.php on line 26
+2023/01/09 09:17:04 [error] 10#10: *18621 FastCGI sent in stderr: "PHP message: PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /var/www/html/class/tasks.php:26
+Stack trace:
+#0 /var/www/html/api/read.php(17): Task->getTasks()
+#1 {main}
+  thrown in /var/www/html/class/tasks.php on line 26" while reading response header from upstream, client: 10.28.0.1, server: _, request: "GET /api/read.php HTTP/1.1", upstream: "fastcgi://unix:/run/php-fpm.sock:", host: "taskproject-svc:8081"
+10.28.0.1 -  [09/Jan/2023:09:17:04 +0000] "GET /api/read.php HTTP/1.1" 500 []
+10.28.0.1 -  [09/Jan/2023:09:17:04 +0000] "GET /api/read.php HTTP/1.1" 500 []
+NOTICE: PHP message: PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /var/www/html/class/tasks.php:26
+Stack trace:
+#0 /var/www/html/api/read.php(17): Task->getTasks()
+#1 {main}
+  thrown in 
