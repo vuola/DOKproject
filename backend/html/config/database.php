@@ -18,7 +18,7 @@
 declare(strict_types=1);
 
 # [START cloud_sql_mysql_pdo_connect_tcp]
-namespace Google\Cloud\Samples\CloudSQL\MySQL;
+# namespace Google\Cloud\Samples\CloudSQL\MySQL;
 
 use PDO;
 use PDOException;
@@ -83,7 +83,7 @@ class Database
                 $e
             );
         }
-        sprintf('Database coonection pointer is %s', $conn);
+        sprintf('! Database handle = %s !', $conn);
         return $conn;
     }
 }
