@@ -231,3 +231,4 @@ INVOCATION 2
 ./cloud_sql_proxy -instances=dwk-gke-360910:europe-north1:instance-for-taskdb=tcp:3306
 mysql -u USERNAME -p --host 127.0.0.1
 
+PHP message: PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2006] MySQL server has gone away

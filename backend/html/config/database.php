@@ -52,7 +52,7 @@ class Database
                 // Here we set the connection timeout to five seconds and ask PDO to
                 // throw an exception if any errors occur.
                 [
-                    PDO::ATTR_TIMEOUT => 5,
+                    PDO::ATTR_TIMEOUT => 30,
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 ]
                 # [END cloud_sql_mysql_pdo_timeout]
