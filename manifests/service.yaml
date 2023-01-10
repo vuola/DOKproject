@@ -12,8 +12,8 @@ spec:
   ports:
   - port: 8080
     protocol: TCP
-    name: frontend-port
-#    name: dbtool-port
+#    name: frontend-port
+    name: dbtool-port
   - port: 8081
     protocol: TCP
     name: backend-port
