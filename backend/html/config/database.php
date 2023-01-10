@@ -18,7 +18,7 @@
 declare(strict_types=1);
 
 # [START cloud_sql_mysql_pdo_connect_tcp]
-namespace Google\Cloud\Samples\CloudSQL\MySQL;
+# namespace Google\Cloud\Samples\CloudSQL\MySQL;
 
 use PDO;
 use PDOException;
@@ -40,7 +40,7 @@ class Database
             $instanceHost = getenv('MARIADB_HOST'); // e.g. '127.0.0.1' ('172.17.0.1' for GAE Flex)
 
             // Connect using TCP
-            $dsn = sprintf('mysql:dbname=%s;host=%s', $dbName, $instanceHost);
+            $dsn = sprintf('mysql:dbname=%s;host=%s;port=3306;charset=utf8', $dbName, $instanceHost);
 
             // Connect to the database
             $conn = new PDO(
