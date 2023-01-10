@@ -202,3 +202,32 @@ Stack trace:
 #1 {main}
   thrown in /var/www/html/class/tasks.php on line 26" while reading response header from upstream, client: 10.28.0.1, server: _, request: "GET /api/read.php HTTP/1.1", upstream: "fastcgi://unix:/run/php-fpm.sock:", host: "taskproject-svc:8081"
 NOTICE: PHP message: PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /var/www/html/class/tasks.php:26
+
+TESTING PROXY: GRANT ME ACCESS
+gcloud projects add-iam-policy-binding dwk-gke-360910 \
+--member="user:markus.vuolahti@gmail.com" \
+--role="roles/cloudsql.client"
+
+DOWNLOAD PROXY
+wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
+
+MAKE IT EXECUTABLE
+chmod +x cloud_sql_proxy
+
+INSPECT CONNECTION NEEDED TO CLOUD SQL
+gcloud sql instances describe instance-for-taskdb
+>> connectionName: dwk-gke-360910:europe-north1:instance-for-taskdb
+>> - ipAddress: 172.23.176.3
+>> type: PRIVATE
+
+USE START-UP OPTION FOR PRIVATE NETWORK CONNECTION
+-ip_address_types=PRIVATE
+
+INVOCATION 1
+./cloud_sql_proxy -instances=dwk-gke-360910:europe-north1:instance-for-taskdb=tcp:3306
+mysql -u USERNAME -p -h HOST-OR-SERVER-IP 
+
+INVOCATION 2
+./cloud_sql_proxy -instances=dwk-gke-360910:europe-north1:instance-for-taskdb=tcp:3306
+mysql -u USERNAME -p --host 127.0.0.1
+
