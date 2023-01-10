@@ -17,6 +17,6 @@ spec:
   - port: 8081
     protocol: TCP
     name: backend-port
-  - port: 3306
-    protocol: TCP
-    name: mariadb-port
+#  - port: 3306
+#    protocol: TCP
+#    name: mariadb-port

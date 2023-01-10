@@ -8,7 +8,7 @@ metadata:
 data:
   MARIADB_DATABASE: taskdb
   MARIADB_TABLE: taskproject
-  MARIADB_HOST: '127.0.0.1'
+  MARIADB_HOST: '127.0.0.1:3306'
   API_HOST: taskproject-svc:8081
 
   
