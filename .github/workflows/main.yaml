@@ -10,7 +10,7 @@ env:
   GAR_LOCATION: eu.gcr.io 
   REPOSITORY: dokproject
   PROJECT: dwk-gke-360910
-  VERSION: '0.0.21'
+  VERSION: '0.0.22'
 
 jobs:
   setup-build-publish-deploy: 

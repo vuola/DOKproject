@@ -20,10 +20,10 @@ declare(strict_types=1);
 # [START cloud_sql_mysql_pdo_connect_tcp]
 # namespace Google\Cloud\Samples\CloudSQL\MySQL;
 
-use PDO;
-use PDOException;
-use RuntimeException;
-use TypeError;
+#use PDO;
+#use PDOException;
+#use RuntimeException;
+#use TypeError;
 
 class Database
 {
@@ -51,10 +51,10 @@ class Database
                 # [START cloud_sql_mysql_pdo_timeout]
                 // Here we set the connection timeout to five seconds and ask PDO to
                 // throw an exception if any errors occur.
-                [
-                    PDO::ATTR_TIMEOUT => 30,
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                ]
+#                [
+#                    PDO::ATTR_TIMEOUT => 30,
+#                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+#                ]
                 # [END cloud_sql_mysql_pdo_timeout]
                 # [END_EXCLUDE]
             );

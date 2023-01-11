@@ -241,3 +241,31 @@ Correctly working ADMINER request
 [Tue Jan 10 21:00:27 2023] [::ffff:35.191.0.85]:59378 [200]: GET /?server=127.0.0.1%3A3306&username=vuola&db=taskdb&script=db
 [Tue Jan 10 21:00:27 2023] [::ffff:35.191.0.85]:59378 Closing
 [Tue Jan 10 21:00:39 2023] [::ffff:35.191.0.104]:32768 Accepted
+
+2023-01-11 09:00:32,667 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+NOTICE: PHP message: PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /var/www/html/config/database.php on line 23
+NOTICE: PHP message: PHP Warning:  The use statement with non-compound name 'PDOException' has no effect in /var/www/html/config/database.php on line 24
+NOTICE: PHP message: PHP Warning:  The use statement with non-compound name 'RuntimeException' has no effect in /var/www/html/config/database.php on line 25
+NOTICE: PHP message: PHP Warning:  The use statement with non-compound name 'TypeError' has no effect in /var/www/html/config/database.php on line 26
+NOTICE: PHP message: PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2006] MySQL server has gone away in /var/www/html/config/database.php:56
+Stack trace:
+#0 /var/www/html/config/database.php(56): PDO->__construct()
+#1 /var/www/html/api/read.php(9): Database::getConnection()
+#2 {main}
+Next RuntimeException: Could not connect to the Cloud SQL Database. Check that your username and password are correct, that the Cloud SQL proxy is running, and that the database exists and is ready for use. For more assistance, refer to https://cloud.google.com/sql/docs/mysql/connect-external-app. The PDO error was SQLSTATE[HY000] [2006] MySQL server has gone away in /var/www/html/config/database.php:73
+Stack trace:
+#0 /var/www/html/api/read.php(9): Database::getConnection()
+#1 {main}
+  thrown in /var/www/html/config/database.php on line 73
+2023/01/11 09:19:41 [error] 11#11: *1 FastCGI sent in stderr: "PHP message: PHP Warning:  The use statement with non-compound name 'PDO' has no effect in /var/www/html/config/database.php on line 23PHP message: PHP Warning:  The use statement with non-compound name 'PDOException' has no effect in /var/www/html/config/database.php on line 24PHP message: PHP Warning:  The use statement with non-compound name 'RuntimeException' has no effect in /var/www/html/config/database.php on line 25PHP message: PHP Warning:  The use statement with non-compound name 'TypeError' has no effect in /var/www/html/config/database.php on line 26PHP message: PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2006] MySQL server has gone away in /var/www/html/config/database.php:56
+Stack trace:
+#0 /var/www/html/config/database.php(56): PDO->__construct()
+#1 /var/www/html/api/read.php(9): Database::getConnection()
+#2 {main}
+
+Next RuntimeException: Could not connect to the Cloud SQL Database. Check that your username and password are correct, that the Cloud SQL proxy is running, and that the database exists and is ready for use. For more assistance, refer to https://cloud.google.com/sql/docs/mysql/connect-external-app. The PDO error was SQLSTATE[HY000] [2006] MySQL server has gone away in /var/www/html/config/database.php:73
+Stack trace:
+#0 /var/www/html/api/read.php(9): Database::getConnection()
+#1 {main}
+  thrown in /var/www/html/config/database.php on line 73" while reading response header from upstream, client: 10.28.0.1, server: _, request: "GET /api/read.php HTTP/1.1", upstream: "fastcgi://unix:/run/php-fpm.sock:", host: "taskproject-svc:8081"
+10.28.0.1 -  [11/Jan/2023:09:19:41 +0000] "GET /api/read.php HTTP/1.1" 500 []
