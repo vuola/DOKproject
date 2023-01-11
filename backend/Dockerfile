@@ -62,7 +62,7 @@ ENV PORT=8081
 ENV NGINX_PORT=8081
 
 # Switch to use a non-root user from here on
-# USER nobody
+USER nobody
 
 # Expose the port nginx is reachable on
 EXPOSE 8081
