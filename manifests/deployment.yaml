@@ -43,7 +43,7 @@ spec:
         image: PROJECT/BACKEND
         ports: 
         - name: backend-port
-          containerPort: 8081
+          containerPort: 8081./
         imagePullPolicy: Always
         envFrom:
         - secretRef:
@@ -56,13 +56,13 @@ spec:
         image: gcr.io/cloudsql-docker/gce-proxy:1.33.1 # make sure the use the latest version
         command:
           - "/cloud_sql_proxy"
-          - "-ip_address_types=PRIVATE"
+          - "-ip_address_types=PUBLIC,PRIVATE"
       # By default, the proxy will write all logs to stderr.
       # Write all logs to stdout (except errors
       # which will still go to stderr)
           - "-log_debug_stdout"
       # Default ports MySQL: 3306, Postgres: 5432, SQLServer: 1433
-          - "-instances=dwk-gke-360910:europe-north1:instance-for-taskdb=tcp:3306"
+          - "-instances=dwk-gke-360910:europe-north1:instance-for-taskdb=tcp:0.0.0.0:3306"
         securityContext:
       # The default Cloud SQL proxy image runs as the
       # "nonroot" user and group (uid: 65532) by default.

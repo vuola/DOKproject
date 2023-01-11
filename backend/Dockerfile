@@ -27,7 +27,8 @@ RUN apk add --no-cache \
   php81-xml \
   php81-xmlreader \
   php81-zlib \
-  supervisor
+  supervisor \
+  mysql-client
 
 # Create symlink so programs depending on `php` still function
 RUN ln -s /usr/bin/php81 /usr/bin/php
@@ -61,7 +62,7 @@ ENV PORT=8081
 ENV NGINX_PORT=8081
 
 # Switch to use a non-root user from here on
-USER nobody
+# USER nobody
 
 # Expose the port nginx is reachable on
 EXPOSE 8081

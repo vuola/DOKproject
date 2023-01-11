@@ -232,3 +232,12 @@ INVOCATION 2
 mysql -u USERNAME -p --host 127.0.0.1
 
 PHP message: PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY000] [2006] MySQL server has gone away
+
+Correctly working ADMINER request
+[Tue Jan 10 21:00:27 2023] [::ffff:35.191.0.88]:51200 
+[200]: GET /?server=127.0.0.1%3A3306&username=vuola&db=taskdb
+[Tue Jan 10 21:00:27 2023] [::ffff:35.191.0.88]:51200 Closing
+[Tue Jan 10 21:00:27 2023] [::ffff:35.191.0.85]:59378 Accepted
+[Tue Jan 10 21:00:27 2023] [::ffff:35.191.0.85]:59378 [200]: GET /?server=127.0.0.1%3A3306&username=vuola&db=taskdb&script=db
+[Tue Jan 10 21:00:27 2023] [::ffff:35.191.0.85]:59378 Closing
+[Tue Jan 10 21:00:39 2023] [::ffff:35.191.0.104]:32768 Accepted
