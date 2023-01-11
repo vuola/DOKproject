@@ -41,22 +41,24 @@ class Database
 
             // Connect using TCP
             $dsn = sprintf('mysql:dbname=%s;host=%s;port=3306;charset=utf8', $dbName, $instanceHost);
+            $options = array(PDO::ATTR_TIMEOUT => 10, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
 
             // Connect to the database
             $conn = new PDO(
                 $dsn,
                 $username,
                 $password,
-                # [START_EXCLUDE]
-                # [START cloud_sql_mysql_pdo_timeout]
+                $options
+                // [START_EXCLUDE]
+                // [START cloud_sql_mysql_pdo_timeout]
                 // Here we set the connection timeout to five seconds and ask PDO to
                 // throw an exception if any errors occur.
-#                [
-#                    PDO::ATTR_TIMEOUT => 30,
-#                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-#                ]
-                # [END cloud_sql_mysql_pdo_timeout]
-                # [END_EXCLUDE]
+                // [
+                //    PDO::ATTR_TIMEOUT => 30,
+                //    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                // ]
+                // [END cloud_sql_mysql_pdo_timeout]
+                // [END_EXCLUDE]
             );
         } catch (TypeError $e) {
             throw new RuntimeException(
@@ -83,7 +85,6 @@ class Database
                 $e
             );
         }
-        sprintf('! Database handle = %s !', $conn);
         return $conn;
     }
 }
