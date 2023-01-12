@@ -73,7 +73,7 @@ jobs:
         docker pull webdevops/php-nginx-dev:8.1
         docker tag webdevops/php-nginx-dev:8.1 "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Publish backend to G 
-    - run: |-
+      run: |-
         docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Pull adminer from docker
       run: |-
