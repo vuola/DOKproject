@@ -1,0 +1,11 @@
+version: "1"
+services:
+  php:
+    image: webdevops/php-nginx-dev:8.1
+    working_dir: /app
+    environment:
+      - WEB_DOCUMENT_ROOT=/app
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/app:rw,cached
