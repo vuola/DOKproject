@@ -59,9 +59,9 @@ BUILD GSA-KSA BINDINGS
     ENABLE IAM BINDING BETWEEN GSA AND KSA
 
 gcloud iam service-accounts add-iam-policy-binding \
-  --role="roles/iam.workloadIdentityUser" \
-  --member="serviceAccount:dwk-gke-360910.svc.id.goog[exercise307/ksa-cloud-sql]" \
-  service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
+--role="roles/iam.workloadIdentityUser" \
+--member="serviceAccount:dwk-gke-360910.svc.id.goog[exercise307-2/ksa-cloud-sql]" \
+service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
  
     ADD AN ANNOTATION TO THE KSA NAME
 
