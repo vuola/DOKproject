@@ -4,9 +4,12 @@ metadata:
   name: taskproject-ss
 #  namespace: project
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: tsp
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -42,8 +45,12 @@ spec:
       - name: backend-taskproject
         image: PROJECT/BACKEND
         ports: 
-        - name: backend-port
-          containerPort: 8081
+          - containerPort: 80
+        resources: {}
+        volumeMounts:
+          - mountPath: /app
+            name: backend-claim0
+        workingDir: /app
         imagePullPolicy: Always
         envFrom:
         - secretRef:
@@ -67,4 +74,9 @@ spec:
       # The default Cloud SQL proxy image runs as the
       # "nonroot" user and group (uid: 65532) by default.
           runAsNonRoot: true
-            
+      restartPolicy: Always
+      volumes:
+        - name: backend-claim0
+          persistentVolumeClaim:
+            claimName: backend-claim0
+status: {}            

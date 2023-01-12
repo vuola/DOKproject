@@ -51,12 +51,7 @@ jobs:
         cluster_name: 'dwk-cluster'
         location: 'europe-north1-b'
 
-    # Build the Docker images
-    - name: Build backend
-      run: |-
-        docker build \
-          --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION" \
-          ./backend
+    # Build and move images to Google container registry
     - name: Build frontend
       run: |-
         docker build \
@@ -67,17 +62,19 @@ jobs:
         docker build \
           --tag "$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION" \
           ./cronjob
-
-    # Push the Docker image to Google Artifact Registry
-    - name: Publish backend
-      run: |-
-        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Publish frontend
       run: |-
         docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/frontend:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Publish cronjob
       run: |-
         docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/cronjob:${GITHUB_REF#refs/heads/}-$VERSION"
+    - name: Pull backend (PHP-nginx) from docker
+      run: |-
+        docker pull webdevops/php-nginx-dev:8.1
+        docker tag webdevops/php-nginx-dev:8.1 "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION"
+    - name: Publish backend to G 
+    - run: |-
+        docker push "$GAR_LOCATION/$PROJECT/$REPOSITORY/backend:${GITHUB_REF#refs/heads/}-$VERSION"
     - name: Pull adminer from docker
       run: |-
         docker pull adminer:latest

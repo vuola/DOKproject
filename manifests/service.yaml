@@ -15,5 +15,8 @@ spec:
 #    name: frontend-port
     name: dbtool-port
   - port: 8081
+    targetPort: 80
     protocol: TCP
     name: backend-port
+status:
+  loadBalancer: {}

@@ -1,0 +1,15 @@
+version: "3.3"
+services:
+  backend:
+    image: 'webdevops/php-nginx-dev:8.1'
+    container_name: backend
+    restart: always
+    working_dir: /app
+    environment:
+      - WEB_DOCUMENT_ROOT=/app
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/app:rw,cached
+    labels:
+      kompose.service.type: NodePort
