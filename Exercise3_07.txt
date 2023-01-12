@@ -66,9 +66,10 @@ gcloud iam service-accounts add-iam-policy-binding \
     ADD AN ANNOTATION TO THE KSA NAME
 
 kubectl annotate serviceaccount \
-  ksa-cloud-sql  \
-  iam.gke.io/gcp-service-account=service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
+ksa-cloud-sql  \
+iam.gke.io/gcp-service-account=service-account-GKE-CSQL@dwk-gke-360910.iam.gserviceaccount.com
 
 UPDATE manifests/
 
     INCLUDE SIDECAR 'cloud-sql-proxy' INTO THE STATEFULSET. FOR PODS, THE MySQL ADDRESS IS THEN 127.0.0.1:3306
+
