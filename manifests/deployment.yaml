@@ -48,7 +48,7 @@ spec:
           - containerPort: 80
         resources: {}
         volumeMounts:
-          - mountPath: /app
+          - mountPath: /tmp
             name: backend-claim0
         workingDir: /app
         imagePullPolicy: Always
